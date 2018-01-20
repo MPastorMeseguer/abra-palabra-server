@@ -6,6 +6,7 @@ const jwtMiddleware = require('./helpers/jwt.helper').validateRequest;
 const auth = require('./controllers/auth');
 const card = require('./controllers/card');
 const user = require('./controllers/user');
+const game = require('./controllers/game');
 
 router.post('/signup', auth.signup);
 router.post('/login', auth.login);
@@ -15,5 +16,7 @@ router.get('/user/:id', jwtMiddleware, user.get);
 
 router.post('/card', jwtMiddleware, card.create);
 router.get('/card/:id', jwtMiddleware, card.get);
+
+router.post('/game', jwtMiddleware, game.init)
 
 module.exports = router;
