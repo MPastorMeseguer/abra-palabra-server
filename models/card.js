@@ -10,4 +10,4 @@ const cardSchema = new Schema({
   translateLanguage: { type: String, required: true, enum: ['en', 'es'] }
 });
 
-module.exports = mongoose.model("Card", cardSchema, "Cards");;
+module.exports = mongoose.model("Card", cardSchema, "Cards");
