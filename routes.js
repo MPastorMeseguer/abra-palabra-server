@@ -13,7 +13,7 @@ router.get('/token', auth.token);
 
 // router.get('/test', jwtMiddleware, () => { })
 
-router.post('/card', card.create);
-
+router.post('/card', jwtMiddleware, card.create);
+router.get('/card/:id', jwtMiddleware, card.get);
 
 module.exports = router;
