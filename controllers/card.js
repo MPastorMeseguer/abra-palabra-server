@@ -23,7 +23,10 @@ module.exports = {
   },
   get: (req, res, next) => {
     Card.findOne({id: req.params.id})
-      .then(card => res.status(200).json({message: 'Ok', ...card}))
+      .then(card => {
+        if (!card) return res.status(404).json({message: 'Card does not exist'})
+        return res.status(200).json({message: 'Ok', ...card})
+      })
       .catch(e => res.status(500).json({message: 'Something went wrong'}));
   }
 }
