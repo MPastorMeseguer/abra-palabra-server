@@ -5,13 +5,13 @@ const jwtMiddleware = require('./helpers/jwt.helper').validateRequest;
 
 const auth = require('./controllers/auth');
 const card = require('./controllers/card');
-// const game = require('./controllers/game');
+const user = require('./controllers/user');
 
 router.post('/signup', auth.signup);
 router.post('/login', auth.login);
 router.get('/token', auth.token);
 
-// router.get('/test', jwtMiddleware, () => { })
+router.get('/user/:id', jwtMiddleware, user.get);
 
 router.post('/card', jwtMiddleware, card.create);
 router.get('/card/:id', jwtMiddleware, card.get);
