@@ -3,6 +3,9 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 
+require("dotenv").config();
+require('./config/database.config');
+
 const app = express();
 
 app.use(bodyParser.json());
