@@ -1,10 +1,10 @@
 const Game = require('../models/game');
 
 module.exports = {
-  init: (req, res, next) => {
+  init: (req, res) => {
 
   },
-  refill: (req, res, next) => {
+  refill: (req, res) => {
 
   }
 }

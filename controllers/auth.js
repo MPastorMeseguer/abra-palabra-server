@@ -7,7 +7,7 @@ const jwtHelper = require('../helpers/jwt.helper');
 const User = require('../models/user');
 
 module.exports = {
-  signup: (req, res, next) => {
+  signup: (req, res) => {
     const { username, email, password } = req.body;
 
     if (!username || !password || !email) return res.status(403).json({ message: "Provide username, email and password" });
@@ -28,7 +28,7 @@ module.exports = {
         return res.json({ message: err.message })
       });
   },
-  login: (req, res, next) => {
+  login: (req, res) => {
     const { identification, password } = req.body;
     const searchValue = validator.validate(identification) ? 'email' : 'username';
     const query = {};
@@ -52,7 +52,7 @@ module.exports = {
         return res.json({ message: err.message || 'Serverside error' })
       });
   },
-  token: async (req, res, next) => {
+  token: async (req, res) => {
     const validToken = await jwtHelper.verifyToken(res, req.headers.token);
     if (!validToken) return res.status(401).json({ message: 'Invalid token' });
     return res.status(200).json({ message: 'Valid token' });

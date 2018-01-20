@@ -8,12 +8,10 @@ require('./config/database.config');
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(routes);
+app.use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: false }))
+  .use(express.static(path.join(__dirname, 'public')))
+  .use(routes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
