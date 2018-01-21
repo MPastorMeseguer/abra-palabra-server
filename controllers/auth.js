@@ -1,5 +1,7 @@
 const validator = require('email-validator');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const bcryptSalt = 10;
 
 const jwtOptions = require('../config/jwt.config');
 const jwtHelper = require('../helpers/jwt.helper');
@@ -9,7 +11,7 @@ const User = require('../models/user');
 module.exports = {
   signup: (req, res) => {
     const { username, email, password } = req.body;
-
+    console.log(req.body)
     if (!username || !password || !email) return res.status(403).json({ message: "Provide username, email and password" });
 
     User.findOne({ $or: [{ 'username': username }, { 'email': email }] })
@@ -53,8 +55,8 @@ module.exports = {
       });
   },
   token: async (req, res) => {
-    const validToken = await jwtHelper.verifyToken(res, req.headers.token);
-    if (!validToken) return res.status(401).json({ message: 'Invalid token' });
-    return res.status(200).json({ message: 'Valid token' });
+    return await jwtHelper.verifyToken(res, req.headers.token) ?
+      res.status(401).json({ message: 'Invalid token' }) :
+      res.status(200).json({ message: 'Valid token' });
   },
 };

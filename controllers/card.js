@@ -7,19 +7,25 @@ module.exports = {
       translation,
       wrongAnswers,
       author,
-      language,
-      translateLanguage
+      originalLanguage,
+      translationLanguage
     } = req.body;
-    if (!word ||
+    if (
+      !word ||
       !translation ||
       !wrongAnswers ||
       !author ||
-      !language ||
-      !translateLanguage) return res.status(422).json({ message: 'Missing information' });
+      !originalLanguage ||
+      !translationLanguage
+    ) return res.status(422).json({ message: 'Missing information' });
+
     new Card({ ...req.body })
       .save()
       .then(card => res.status(201).json({ message: 'Donezio!' }))
-      .catch(e => res.status(500).json({ message: 'Something went wrong' }));
+      .catch(e => {
+        console.log(e)
+        res.status(500).json({ message: 'Something went wrong' })
+      });
   },
   get: (req, res) => {
     Card.findOne({ id: req.params.id })
