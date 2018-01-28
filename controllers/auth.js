@@ -22,7 +22,7 @@ module.exports = {
         return new User({ username, email, password: hashPass }).save();
       }).then(user => {
         const token = jwt.sign({ id: user._id }, jwtOptions.secret, { expiresIn: 100000 });
-        return res.status(200).json({ message: "ok", token });
+        return res.status(200).json({ user: user._id, token });
       }).catch(err => {
         if (err.message === 'There is already a user with those credentials') {
           res.status(422);
@@ -41,15 +41,16 @@ module.exports = {
       .then(user => {
         if (!user) return Promise.reject(new Error('There is no user with those credentials'));
         bcrypt.compare(password, user.password, (err, isMatch) => {
-          if (!isMatch) return Promise.reject(new Error('Wrong password'));
+          if (!isMatch) return Promise.reject(new Error('Wrong password'))
+            .catch(error => {
+              return res.status(401).json({ message: error.message })
+            });
           const token = jwt.sign({ id: user._id }, jwtOptions.secret, { expiresIn: 100000 });
-          return res.status(200).json({ message: "ok", token });
+          return res.status(200).json({ user: user._id, token });
         });
       }).catch(err => {
         if (err.message === 'There is already a user with those credentials') {
           res.status(422);
-        } else if (err.message === 'Wrong password') {
-          res.status(401);
         } else res.status(500);
         return res.json({ message: err.message || 'Serverside error' })
       });
